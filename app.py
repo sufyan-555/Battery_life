@@ -184,11 +184,8 @@ with st.sidebar:
         "Sawrnadeep","Jayant","Sufyan"
     ]
     
-    # Random avatar styles and seeds for consistency
-    avatar_styles = ['adventurer', 'avataaars', 'bottts', 'identicon', 'micah', 'miniavs', 'pixel-art']
     
     for name in team_members:
-        # Use the name as a seed for consistency
         avatar_style = 'personas'
         avatar_seed = 's'.join(name.split())
         avatar_url = f"https://api.dicebear.com/7.x/{avatar_style}/svg?seed={avatar_seed}"
@@ -205,20 +202,17 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("""📘 <i>This app provides an estimated battery health score and does not replace certified diagnostics.</i>""", unsafe_allow_html=True)
     
-    # Current date for a dynamic feel
     current_date = datetime.now().strftime("%B %d, %Y")
     st.markdown(f"<div style='text-align: center; color: #888;'>Last updated: {current_date}</div>", unsafe_allow_html=True)
 
 # Main content
 st.markdown("<h1>🔋 EV Battery Health Predictor</h1>", unsafe_allow_html=True)
 
-# Quick intro
 st.markdown("""
         Get an AI-powered estimate of your electric vehicle's battery health based on usage patterns and environmental factors.
         Fill in the form below and click "Predict" to see your results.
 """, unsafe_allow_html=True)
 
-# Create columns for input and output
 col1, col2 = st.columns([1, 1])
 
 with col1:
@@ -260,7 +254,6 @@ with col2:
     
     # Results area
     if predict:
-        # Create the input array for prediction
         input_data = np.array([[age, mileage, charging_cycles, avg_temp, fast_charging, battery_capacity]])
         
         try:
@@ -292,9 +285,7 @@ with col2:
             
             st.markdown("### Insights")
             
-            # Estimated remaining range
-            # This is a simplified estimate based on battery capacity and health
-            ideal_range = battery_capacity * 5  # Assuming 5 km per kWh in ideal conditions
+            ideal_range = battery_capacity * 5  
             estimated_range = ideal_range * (prediction / 100)
             
             st.markdown(f"**Estimated Range**: About {estimated_range:.0f} km on a full charge")
