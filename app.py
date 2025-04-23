@@ -255,10 +255,15 @@ with col2:
     # Results area
     if predict:
         input_data = np.array([[age, mileage, charging_cycles, avg_temp, fast_charging, battery_capacity]])
-        
+    
         try:
             # Get prediction
             prediction = model.predict(input_data)[0]
+
+            if age > 5:
+                prediction -= prediction * 0.4
+            
+            degradation = 100 - prediction  # Calculate battery degradation
             
             # Display the result
             st.markdown(f"""
@@ -266,6 +271,9 @@ with col2:
                     <h2 style="color: #4caf50;">Battery Health Assessment</h2>
                     <div style="font-size: 3rem; font-weight: bold; color: {'#4caf50' if prediction > 80 else '#ff9800' if prediction > 60 else '#f44336'};">
                         {prediction:.1f}%
+                    </div>
+                    <div style="font-size: 1.5rem; color: #ff9800; margin-top: 10px;">
+                        Battery Degradation: {degradation:.1f}%
                     </div>
                     <div class="gauge-container">
                         <div style="width: 100%; background-color: #444; height: 20px; border-radius: 10px; margin-top: 10px;">
@@ -277,8 +285,8 @@ with col2:
                     </div>
                     <p style="margin-top: 15px;">
                         {'Critical - Consider replacement soon' if prediction < 40 else
-                         'Fair - Monitor carefully' if prediction < 70 else
-                         'Excellent - Battery in good condition'}
+                        'Fair - Monitor carefully' if prediction < 70 else
+                        'Excellent - Battery in good condition'}
                     </p>
                 </div>
             """, unsafe_allow_html=True)
@@ -309,7 +317,7 @@ with col2:
                 st.markdown("**Your usage patterns are optimal for battery longevity.**")
             
             st.markdown('</div>', unsafe_allow_html=True)
-            
+        
         except Exception as e:
             st.markdown(f"""
                 <div class="info-box" style="border-left: 4px solid #f44336;">
